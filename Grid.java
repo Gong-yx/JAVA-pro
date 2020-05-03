@@ -1,9 +1,18 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-public class Grid extends JPanel {
-    private JTextField[][][] txtGame;
+public class Grid extends JPanel{
+
+    //设置9*9宫格
+    public static JTextField[][][] txtGame;
     private JPanel[] pnlGame;
+    //记录点击的格子位置
+    public static int X;
+    public static int Y;
+    public static int Z;
 
     public Grid(){
         pnlGame = new JPanel[9];
@@ -23,8 +32,22 @@ public class Grid extends JPanel {
                     txtGame[z][x][y].setFont(new Font("Dialog",Font.ITALIC,20));
                     txtGame[z][x][y].setHorizontalAlignment(JTextField.CENTER);
                     pnlGame[z].add(txtGame[z][x][y]);
+                    //得到当前点击的格子位置
+                    int finalZ = z;
+                    int finalY = y;
+                    int finalX = x;
+                    txtGame[z][x][y].addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
+                           X= finalX;
+                           Y= finalY;
+                           Z= finalZ;
+                        }
+                    });
                 }
             }
         }
+
     }
+
 }
