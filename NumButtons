@@ -15,8 +15,8 @@ public class NumButtons extends JPanel {
         for (int i=0;i<9;i++){
             add(Nums[i]);
             int finalI = i;
+            int finalI1=i;
             //点击右侧工具栏的九宫格数字，可添加入9*9宫格中已选定区域
-            int finalI1 = i;//添加这一句，为了使actionlistener获得i
             Nums[i].addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
