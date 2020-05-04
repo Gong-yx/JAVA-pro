@@ -4,13 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Tools extends JPanel {
     private JButton Start;
     private JPanel TButtons;
     private JPanel Nums;
-    public int[][][][] Questions = new int[10][9][3][3];
 
     public Tools(){
         Start = new JButton("开始游戏");
@@ -20,6 +20,13 @@ public class Tools extends JPanel {
         Start.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                for (int z=0;z<9;z++){
+                    for (int x=0;x<3;x++){
+                        for (int y=0;y<3;y++){
+                            Grid.txtGame[z][x][y].setText("");
+                        }
+                    }
+                }
                 //建立三个难度选项
                 Object[] Difficulties = {"新手","普通","专家"};
                 //初始化难度选择
@@ -28,27 +35,27 @@ public class Tools extends JPanel {
                 //不同难度选择题库
                 if (difficulty==Difficulties[0]){
                     Window.changeState(true);
-                    String fileName = "Easy.txt";
+                    String fileName = "Easy"+ (int)(Math.random()*10+1)+".txt";
                     try {
-                        Questions = readFromFile(fileName);
+                        displayQuestion(fileName);
                     } catch (FileNotFoundException ex) {
                         ex.printStackTrace();
                     }
                 }
                 if (difficulty==Difficulties[1]){
                     Window.changeState(true);
-                    String fileName = "Normal.txt";
+                    String fileName = "Normal"+ (int)(Math.random()*10+1)+".txt";
                     try {
-                        Questions = readFromFile(fileName);
+                        displayQuestion(fileName);
                     } catch (FileNotFoundException ex) {
                         ex.printStackTrace();
                     }
                 }
                 if (difficulty==Difficulties[2]){
                     Window.changeState(true);
-                    String fileName = "Hard.txt";
+                    String fileName = "Hard"+ (int)(Math.random()*10+1)+".txt";
                     try {
-                        Questions = readFromFile(fileName);
+                        displayQuestion(fileName);
                     } catch (FileNotFoundException ex) {
                         ex.printStackTrace();
                     }
@@ -69,34 +76,28 @@ public class Tools extends JPanel {
         this.add(TButtons,BorderLayout.SOUTH);
     }
 
-    public int[][][][] readFromFile(String fileName) throws FileNotFoundException {
+    public void displayQuestion(String fileName) throws FileNotFoundException {
         File file = new File(fileName);
         //十组题目
-        int[][][][] que = new int[10][9][3][3];
+        int[][][] que = new int[9][3][3];
+        ArrayList<Integer> coordinateX = new ArrayList<>();
+        ArrayList<Integer> coordinateY = new ArrayList<>();
+        ArrayList<Integer> coordinateZ = new ArrayList<>();
         Scanner in = new Scanner(file);
-        for (int i=0;i<2;i++){
-            for (int z=0;z<9;z++){
-                for (int x=0;x<3;x++){
-                    for (int y=0;y<3;y++){
-                        que[i][z][x][y] = in.nextInt();//这里报错
-                    }
-                }
-                //换行
-                in.nextLine();
-                in.nextLine();
-            }
-        }
-        //debug用的输出
-        for (int i=0;i<2;i++){
-            for (int z=0;z<9;z++){
-                for (int x=0;x<3;x++){
-                    for (int y=0;y<3;y++){
-                        System.out.print(que[i][z][x][y]);
+        for (int z=0;z<9;z++) {
+            for (int x = 0; x < 3; x++) {
+                String s = in.nextLine();
+                String[] ss = s.split(",");
+                for (int y = 0; y < 3; y++) {
+                    que[z][x][y] = Integer.parseInt(ss[y]);
+                    //若为负数输出数字的绝对值并设置为不可编辑
+                    if (que[z][x][y] < 0){
+                        Grid.txtGame[z][x][y].setText((-que[z][x][y])+"");
+                        Grid.txtGame[z][x][y].setEditable(false);
                     }
                 }
             }
         }
-        return que;
     }
 }
 
