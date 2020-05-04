@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.undo.UndoManager;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,7 +24,19 @@ public class ToolButtons extends JPanel {
         setLayout(new GridLayout(4,1));
         add(Tips);
         add(Delete);
+        Delete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Grid.txtGame[Grid.Z][Grid.X][Grid.Y].setText("");
+            }
+        });
+        //添加撤销按钮到面板并设置其功能
         add(Repeal);
+        Repeal.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            }
+        });
         //添加退出按钮到面板并设置其功能
         add(Quit);
         Quit.addActionListener(new ActionListener() {
