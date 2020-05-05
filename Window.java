@@ -1,11 +1,13 @@
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import javax.swing.undo.UndoManager;
 
 public class Window extends JFrame {
     private static Grid SudokuGrid;
     private JLabel Title;
     private Tools tools;
+    private JPanel Attentions;
 
     //分步设置画布各个界面及功能
     public Window(){
@@ -13,12 +15,13 @@ public class Window extends JFrame {
         addGrid();
         addTitle();
         addTools();
+        addAttentions();
         this.setVisible(true);
     }
     //设置画布
     private void init(){
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
-        this.setSize(400,320);
+        this.setSize(400,360);
         this.setResizable(false);
         this.setTitle("Sudoku");
         this.setLayout(new BorderLayout());
@@ -40,6 +43,12 @@ public class Window extends JFrame {
         tools = new Tools();
         tools.setBorder(new TitledBorder("Tools"));
         this.add(tools,BorderLayout.EAST);
+    }
+
+    private void addAttentions(){
+        Attentions=new Attention();
+        Attentions.setBorder(new TitledBorder("Attention!"));
+        this.add(Attentions,BorderLayout.SOUTH);
     }
     //改变棋盘的开放状态（可输入或不可输入）
     public static void changeState(boolean state){
