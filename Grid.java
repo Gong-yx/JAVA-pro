@@ -29,7 +29,6 @@ public class Grid extends JPanel {
                     txtGame[z][x][y] = new JTextField();
                     txtGame[z][x][y].setBorder(BorderFactory.createEtchedBorder());
                     txtGame[z][x][y].setFont(new Font("Dialog",Font.ITALIC,20));
-                    txtGame[z][x][y].setHorizontalAlignment(JTextField.CENTER);
                     pnlGame[z].add(txtGame[z][x][y]);
                     txtGame[z][x][y].setEditable(false);
                     //得到当前点击的格子位置

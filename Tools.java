@@ -11,6 +11,13 @@ public class Tools extends JPanel {
     private JButton Start;
     private JPanel TButtons;
     private JPanel Nums;
+    public static String fileName;
+    public static int[][][] Question = new int[9][3][3];
+    //记录最后一次改动的坐标
+    public static ArrayList<Integer> lastX = new ArrayList<>();
+    public static ArrayList<Integer> lastY = new ArrayList<>();
+    public static ArrayList<Integer> lastZ = new ArrayList<>();
+    public static ArrayList<String> lastNum = new ArrayList<>();
 
     public Tools(){
         Start = new JButton("开始游戏");
@@ -20,10 +27,12 @@ public class Tools extends JPanel {
         Start.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //清空所有格子
                 for (int z=0;z<9;z++){
                     for (int x=0;x<3;x++){
                         for (int y=0;y<3;y++){
                             Grid.txtGame[z][x][y].setText("");
+
                         }
                     }
                 }
@@ -35,7 +44,7 @@ public class Tools extends JPanel {
                 //不同难度选择题库
                 if (difficulty==Difficulties[0]){
                     Window.changeState(true);
-                    String fileName = "Easy"+ (int)(Math.random()*10+1)+".txt";
+                    fileName = "Easy"+ (int)(Math.random()*10+1)+".txt";
                     try {
                         displayQuestion(fileName);
                     } catch (FileNotFoundException ex) {
@@ -44,7 +53,7 @@ public class Tools extends JPanel {
                 }
                 if (difficulty==Difficulties[1]){
                     Window.changeState(true);
-                    String fileName = "Normal"+ (int)(Math.random()*10+1)+".txt";
+                    fileName = "Normal"+ (int)(Math.random()*10+1)+".txt";
                     try {
                         displayQuestion(fileName);
                     } catch (FileNotFoundException ex) {
@@ -53,7 +62,7 @@ public class Tools extends JPanel {
                 }
                 if (difficulty==Difficulties[2]){
                     Window.changeState(true);
-                    String fileName = "Hard"+ (int)(Math.random()*10+1)+".txt";
+                    fileName = "Hard"+ (int)(Math.random()*10+1)+".txt";
                     try {
                         displayQuestion(fileName);
                     } catch (FileNotFoundException ex) {
@@ -76,6 +85,7 @@ public class Tools extends JPanel {
         this.add(TButtons,BorderLayout.SOUTH);
     }
 
+
     public void displayQuestion(String fileName) throws FileNotFoundException {
         File file = new File(fileName);
         //十组题目
@@ -95,6 +105,13 @@ public class Tools extends JPanel {
                         Grid.txtGame[z][x][y].setText((-que[z][x][y])+"");
                         Grid.txtGame[z][x][y].setEditable(false);
                     }
+                }
+            }
+        }
+        for (int z=0;z<9;z++){
+            for (int x=0;x<3;x++){
+                for (int y=0;y<3;y++){
+                    Question[z][x][y] = que[z][x][y];
                 }
             }
         }
