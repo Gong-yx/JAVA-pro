@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.tools.Tool;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -80,6 +81,11 @@ public class NumButtons extends JPanel {
                         }
                     }
                     if (judge == false) {
+                        //记录最后一步操作
+                        Tools.lastNum.add(Grid.txtGame[Grid.Z][Grid.X][Grid.Y].getText());
+                        Tools.lastX.add(Grid.X);
+                        Tools.lastY.add(Grid.Y);
+                        Tools.lastZ.add(Grid.Z);
                         Grid.txtGame[(Grid.Z)][Grid.X][Grid.Y].setText(String.valueOf(finalI1 + 1));
                     }
                     //判断有重复弹窗提示
