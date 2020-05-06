@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.tools.Tool;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,9 +16,12 @@ public class NumButtons extends JPanel {
     private int[] rowZ;
     //输入位置的列对应的所有z
     private int[] colZ;
+    //当前是否已填满
+    private boolean filled;
 
     //设置右侧工具栏九宫格
     public NumButtons(){
+        filled=false;
         Nums = new JButton[9];
         for (int i=0;i<9;i++){
             Nums[i] = new JButton((i+1)+"");
@@ -81,16 +83,30 @@ public class NumButtons extends JPanel {
                         }
                     }
                     if (judge == false) {
-                        //记录最后一步操作
-                        Tools.lastNum.add(Grid.txtGame[Grid.Z][Grid.X][Grid.Y].getText());
-                        Tools.lastX.add(Grid.X);
-                        Tools.lastY.add(Grid.Y);
-                        Tools.lastZ.add(Grid.Z);
                         Grid.txtGame[(Grid.Z)][Grid.X][Grid.Y].setText(String.valueOf(finalI1 + 1));
+                        //判断是否填满
+                        filled=true;
+                        for(int a=0;a<9;a++){
+                            for(int b=0;b<3;b++){
+                                for(int c=0;c<3&&filled;c++){
+                                    if(Grid.txtGame[a][b][c].getText().equals("")){
+                                        filled=false;
+                                    }
+                                }
+                            }
+                        }
+                        //填满则关闭输入并弹窗
+                        if(filled==true){
+                            Window.changeState(false);
+                            JOptionPane.showMessageDialog(null,"恭喜，本轮游戏胜利！");
+                        }
                     }
                     //判断有重复弹窗提示
                     else {
-                        JOptionPane.showMessageDialog(null, "您填入的数字与所在" + remind + "其他数字重复，请重填！", "提示", JOptionPane.WARNING_MESSAGE);
+                        //当前为填满才有弹窗提示
+                        if (filled == false) {
+                            JOptionPane.showMessageDialog(null, "您填入的数字与所在" + remind + "其他数字重复，请重填！", "提示", JOptionPane.WARNING_MESSAGE);
+                        }
                     }
                 }
             });
