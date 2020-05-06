@@ -19,6 +19,7 @@ public class Tools extends JPanel {
     public static ArrayList<Integer> lastZ = new ArrayList<>();
     public static ArrayList<String> lastNum = new ArrayList<>();
 
+
     public Tools(){
         Start = new JButton("开始游戏");
         setLayout(new BorderLayout());
@@ -94,15 +95,16 @@ public class Tools extends JPanel {
         ArrayList<Integer> coordinateY = new ArrayList<>();
         ArrayList<Integer> coordinateZ = new ArrayList<>();
         Scanner in = new Scanner(file);
-        for (int z=0;z<9;z++) {
+        for (int z = 0; z < 9; z++) {
             for (int x = 0; x < 3; x++) {
                 String s = in.nextLine();
                 String[] ss = s.split(",");
                 for (int y = 0; y < 3; y++) {
                     que[z][x][y] = Integer.parseInt(ss[y]);
                     //若为负数输出数字的绝对值并设置为不可编辑
-                    if (que[z][x][y] < 0){
-                        Grid.txtGame[z][x][y].setText((-que[z][x][y])+"");
+
+                    if (que[z][x][y] < 0) {
+                        Grid.txtGame[z][x][y].setText((-que[z][x][y]) + "");
                         Grid.txtGame[z][x][y].setEditable(false);
                     }
                 }
@@ -116,5 +118,6 @@ public class Tools extends JPanel {
             }
         }
     }
+
 }
 
