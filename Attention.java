@@ -2,22 +2,21 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Attention extends JPanel {
-    private JLabel countRemains;
-    private JLabel timeUsed;
-    private int count;
+    private CountRemain countRemains;
+    private JLabel time;
 
-    public Attention(){
-        //显示剩余提示次数
-        this.count=ToolButtons.getCount();
-        String strOfCount="剩余提示次数："+String.valueOf(this.count);
-        countRemains=new JLabel(strOfCount);
-        //显示耗时
-        timeUsed=new JLabel("time");
-        //布局
-        setLayout(new GridLayout(1,2));
-        //添加
-        add(countRemains);
-        add(timeUsed);
+    public Attention() {
+        addCounts();
+        addTimes();
     }
 
+    public void addCounts(){
+        countRemains=new CountRemain();
+        this.add(countRemains,BorderLayout.WEST);
+    }
+
+    public void addTimes(){
+        time=new JLabel("!");
+        this.add(time,BorderLayout.EAST);
+    }
 }
