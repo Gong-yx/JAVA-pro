@@ -13,7 +13,7 @@ public class ToolButtons extends JPanel {
     private JButton Delete;
     private JButton Tips;
     private JButton Quit;
-    public static int count=10;
+    public static int count=0;
     private JButton Record;
     private JButton Save;
     private JButton Load;
@@ -66,13 +66,16 @@ public class ToolButtons extends JPanel {
         Delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //记录最后一次擦除
-                Tools.lastNum.add(Grid.txtGame[Grid.Z][Grid.X][Grid.Y].getText());
-                Tools.lastX.add(Grid.X);
-                Tools.lastY.add(Grid.Y);
-                Tools.lastZ.add(Grid.Z);
-                //进行擦除
-                Grid.txtGame[Grid.Z][Grid.X][Grid.Y].setText("");
+                //判断是否可以进行擦除
+                if (Grid.txtGame[Grid.Z][Grid.X][Grid.Y].isEditable()) {
+                    //记录最后一次擦除
+                    Tools.lastNum.add(Grid.txtGame[Grid.Z][Grid.X][Grid.Y].getText());
+                    Tools.lastX.add(Grid.X);
+                    Tools.lastY.add(Grid.Y);
+                    Tools.lastZ.add(Grid.Z);
+                    //进行擦除
+                    Grid.txtGame[Grid.Z][Grid.X][Grid.Y].setText("");
+                }
             }
         });
 
@@ -81,15 +84,18 @@ public class ToolButtons extends JPanel {
         Repeal.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //执行记录的最后一步操作
-                Grid.txtGame[Tools.lastZ.get(Tools.lastZ.size()-1)][Tools.lastX.get(Tools.lastX.size()-1)][Tools.lastY.get(Tools.lastY.size()-1)].setText(Tools.lastNum.get(Tools.lastNum.size()-1));
-                //移除已经撤销的操作记录
-                Tools.lastX.remove(Tools.lastX.size()-1);
-                Tools.lastY.remove(Tools.lastY.size()-1);
-                Tools.lastZ.remove(Tools.lastZ.size()-1);
-                Tools.lastNum.remove(Tools.lastNum.size()-1);
+                if (Tools.lastX.size()>0) {
+                    //执行记录的最后一步操作
+                    Grid.txtGame[Tools.lastZ.get(Tools.lastZ.size() - 1)][Tools.lastX.get(Tools.lastX.size() - 1)][Tools.lastY.get(Tools.lastY.size() - 1)].setText(Tools.lastNum.get(Tools.lastNum.size() - 1));
+                    //移除已经撤销的操作记录
+                    Tools.lastX.remove(Tools.lastX.size() - 1);
+                    Tools.lastY.remove(Tools.lastY.size() - 1);
+                    Tools.lastZ.remove(Tools.lastZ.size() - 1);
+                    Tools.lastNum.remove(Tools.lastNum.size() - 1);
+                }
             }
         });
+
         //添加保存按钮到面板并设置其功能
         add(Save);
         Save.addActionListener(new ActionListener() {
@@ -121,12 +127,10 @@ public class ToolButtons extends JPanel {
         if(count>=0) {
             CountRemain.setText(count);
             int site=Tools.Question[Grid.Z][Grid.X][Grid.Y];
-            if(site>0) {
-                Grid.txtGame[(Grid.Z)][Grid.X][Grid.Y].setText(String.valueOf(site));
+            if(site<0) {
+                site=-1*site;
             }
-            else{
-                Grid.txtGame[(Grid.Z)][Grid.X][Grid.Y].setText(String.valueOf(-site));
-            }
+            NumButtons.WheterOutput(site-1,"提示","请仔细检查并更改您当前答案以完成本轮游戏。");
         }
         //没有提示次数时，会有弹窗警告
         if(count<0){
@@ -148,6 +152,7 @@ public class ToolButtons extends JPanel {
             System.exit(0);
     }
     public void saveToFile() throws FileNotFoundException {
+        //建立新的存档文件
         PrintWriter out = new PrintWriter("Save.txt");
         out.println(Tools.fileName);
         for (int z=0;z<9;z++){
@@ -163,6 +168,24 @@ public class ToolButtons extends JPanel {
                 }
                 out.println();
             }
+        }
+        //记录保存时游戏可用提示次数
+        out.println(count);
+        //记录可用的撤销记录
+        for (int i=0;i<Tools.lastX.size();i++){
+            out.print(Tools.lastX.get(i)+" ");
+        }
+        out.println();
+        for (int i=0;i<Tools.lastY.size();i++){
+            out.print(Tools.lastY.get(i)+" ");
+        }
+        out.println();
+        for (int i=0;i<Tools.lastZ.size();i++){
+            out.print(Tools.lastZ.get(i)+" ");
+        }
+        out.println();
+        for (int i=0;i<Tools.lastNum.size();i++){
+            out.println(Tools.lastNum.get(i));
         }
         out.flush();
     }
@@ -189,6 +212,29 @@ public class ToolButtons extends JPanel {
                 }
             }
         }
+        //恢复显示提示次数
+        count = in.nextInt();
+        CountRemain.setText(count);
+        in.nextLine();
+        //恢复撤销记录
+        String str1 = in.nextLine();
+        String[] s1 = str1.split(" ");
+        for (int i=0;i<s1.length;i++){
+            Tools.lastX.add(Integer.parseInt(s1[i]));
+        }
+        String str2 = in.nextLine();
+        String[] s2 = str2.split(" ");
+        for (int i=0;i<s2.length;i++){
+            Tools.lastY.add(Integer.parseInt(s2[i]));
+        }
+        String str3 = in.nextLine();
+        String[] s3 = str3.split(" ");
+        for (int i=0;i<s3.length;i++){
+            Tools.lastZ.add(Integer.parseInt(s3[i]));
+        }
+        for (int i=0;i<s1.length;i++){
+            Tools.lastNum.add(in.nextLine());
+        }
         in.close();
         Scanner input = new Scanner(new File(file));
         for (int z=0;z<9;z++) {
@@ -200,5 +246,6 @@ public class ToolButtons extends JPanel {
                 }
             }
         }
+        input.close();
     }
 }
