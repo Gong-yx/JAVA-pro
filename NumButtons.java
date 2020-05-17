@@ -32,7 +32,9 @@ public class NumButtons extends JPanel {
             int finalI1 = i;
             Nums[i].addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    WheterOutput(finalI1, "您填入的","请重填！");
+                    if (Grid.txtGame[Grid.Z][Grid.X][Grid.Y].isEditable()) {
+                        WheterOutput(finalI1, "您填入的", "请重填！");
+                    }
                 }
             });
         }
@@ -107,6 +109,7 @@ public class NumButtons extends JPanel {
             //填满则关闭输入并弹窗
             if (filled == true) {
                 Window.changeState(false);
+                Grid.txtGame[Grid.Z][Grid.X][Grid.Y].setBorder(BorderFactory.createEtchedBorder());
                 JOptionPane.showMessageDialog(null, "恭喜，本轮游戏胜利！");
             }
         }
