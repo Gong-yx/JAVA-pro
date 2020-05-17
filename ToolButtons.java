@@ -42,7 +42,7 @@ public class ToolButtons extends JPanel {
             }
         });
 
-//加入继续游戏按钮并设置为读取上一次存档
+       //加入继续游戏按钮并设置为读取上一次存档
         add(Load);
         Load.addActionListener(new ActionListener() {
             @Override
@@ -102,6 +102,7 @@ public class ToolButtons extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    JOptionPane.showMessageDialog(null,"当前游戏进度已保存，下次返回游戏后点击’继续游戏‘即可继续本轮游戏。");
                     saveToFile();
                 } catch (FileNotFoundException ex) {
                     ex.printStackTrace();
@@ -205,6 +206,7 @@ public class ToolButtons extends JPanel {
                         int Num = Integer.parseInt(s[y]);
                         if (Num < 0) {
                             Grid.txtGame[z][x][y].setText(-1 * Num + "");
+                            Grid.txtGame[z][x][y].setForeground(Color.GRAY);
                             Grid.txtGame[z][x][y].setEditable(false);
                         } else
                             Grid.txtGame[z][x][y].setText(s[y]);
