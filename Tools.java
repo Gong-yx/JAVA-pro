@@ -28,6 +28,10 @@ public class Tools extends JPanel {
         Start.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                //初始化提示次数
+                ToolButtons.count = 10;
+                CountRemain.setText(ToolButtons.count);
                 //清空所有格子
                 for (int z=0;z<9;z++){
                     for (int x=0;x<3;x++){
@@ -71,6 +75,10 @@ public class Tools extends JPanel {
                     }
                 }
             }
+
+            private ActionListener getActionListener() {
+                return this;
+            }
         });
         addNums();
         addToolButtons();
@@ -105,6 +113,7 @@ public class Tools extends JPanel {
 
                     if (que[z][x][y] < 0) {
                         Grid.txtGame[z][x][y].setText((-que[z][x][y]) + "");
+                        Grid.txtGame[z][x][y].setForeground(Color.GRAY);
                         Grid.txtGame[z][x][y].setEditable(false);
                     }
                 }
