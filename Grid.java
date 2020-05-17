@@ -12,8 +12,8 @@ public class Grid extends JPanel {
     public static int Y;
     public static int Z;
 
-
     public Grid(){
+        //新建棋盘
         pnlGame = new JPanel[9];
         txtGame = new JTextField[9][3][3];
         setLayout(new GridLayout(3,3));
@@ -38,12 +38,20 @@ public class Grid extends JPanel {
                     txtGame[z][x][y].addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseClicked(MouseEvent e) {
+                            //删除上一个光标
+                            txtGame[Z][X][Y].setBorder(BorderFactory.createEtchedBorder());
+                            //建立新的坐标
                             X= finalX;
                             Y= finalY;
                             Z= finalZ;
+                            //设置新的光标
+                            if (txtGame[Z][X][Y].isEditable()) {
+                                txtGame[Z][X][Y].setBorder(BorderFactory.createEtchedBorder(Color.black,Color.gray));
+                            }
                         }
-
                     });
+                    //关闭键盘输入，删除原本闪烁光标
+                    txtGame[z][x][y].setFocusable(false);
                 }
             }
         }
