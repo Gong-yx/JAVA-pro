@@ -7,7 +7,7 @@ public class Attention extends JPanel {
 
     public Attention() {
         addCounts();
-        addTimes();
+        addCodes();
     }
 
     public void addCounts(){
@@ -15,7 +15,7 @@ public class Attention extends JPanel {
         this.add(countRemains,BorderLayout.WEST);
     }
 
-    public void addTimes(){
+    public void addCodes(){
         time=new JLabel("!");
         this.add(time,BorderLayout.EAST);
     }
